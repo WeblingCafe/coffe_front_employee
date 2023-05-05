@@ -1,12 +1,97 @@
 import Input from '@/components/common/Input';
 import styled from 'styled-components';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+export interface ISignUpForm {
+  email: string;
+  password: string;
+  username: string;
+  nickname: string;
+  birthdate: string;
+}
+
+const schema = yup.object({
+  email: yup
+    .string()
+    .matches(new RegExp('[a-z0-9]+@snaps+.[a-z]{2,3}'), '스냅스 이메일을 입력해주세요.')
+    .required('이메일을 입력해주세요.'),
+  password: yup.string().required('비밀번호를 입력해주세요.'),
+  username: yup.string().required('실명을 입력해주세요.'),
+  nickname: yup.string().required('영어 이름을 입력해주세요.'),
+  birthdate: yup.string().required('생일을 선택해주세요.'),
+});
+
+export default function SignUp() {
+  const { register, handleSubmit, formState } = useForm<ISignUpForm>({
+    resolver: yupResolver(schema),
+    mode: 'onSubmit',
+  });
+
+  const onSignUp = (data: ISignUpForm) => {
+    console.log('submit', data);
+  };
+
+  return (
+    <SignUpWrapper>
+      <div className="signup-box">
+        <div className="signup-section">
+          <h1>Webling Cafe</h1>
+        </div>
+        <form onSubmit={handleSubmit(onSignUp)}>
+          <div className="signup-section">
+            <Input
+              className="signup-input"
+              type="email"
+              placeholder="email"
+              useFormRegisterReturn={register('email')}
+              error={formState.errors.email?.message ?? ''}
+            ></Input>
+            <Input
+              className="signup-input"
+              type="password"
+              placeholder="password"
+              useFormRegisterReturn={register('password')}
+              error={formState.errors.password?.message ?? ''}
+            ></Input>
+            <Input
+              className="signup-input"
+              type="text"
+              placeholder="실명"
+              useFormRegisterReturn={register('username')}
+              error={formState.errors.username?.message ?? ''}
+            ></Input>
+            <Input
+              className="signup-input"
+              type="text"
+              placeholder="영어 이름"
+              useFormRegisterReturn={register('nickname')}
+              error={formState.errors.nickname?.message ?? ''}
+            ></Input>
+            <Input
+              className="signup-input"
+              type="date"
+              placeholder="생일"
+              useFormRegisterReturn={register('birthdate')}
+              error={formState.errors.birthdate?.message ?? ''}
+            ></Input>
+          </div>
+          <div className="signup-section">
+            <button type="submit">회원가입</button>
+          </div>
+        </form>
+      </div>
+    </SignUpWrapper>
+  );
+}
 
 const SignUpWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 
-  .signin-box {
+  .signup-box {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -15,13 +100,14 @@ const SignUpWrapper = styled.div`
     height: 100vh;
   }
 
-  .signin-section {
+  .signup-section {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin-bottom: 20px;
-    > * {
+
+    .signup-input {
       margin-bottom: 10px;
     }
   }
@@ -36,25 +122,3 @@ const SignUpWrapper = styled.div`
     color: white;
   }
 `;
-
-export default function SignUp() {
-  return (
-    <SignUpWrapper>
-      <div className="signin-box">
-        <div className="signin-section">
-          <h1>Webling Cafe</h1>
-        </div>
-        <div className="signin-section">
-          <Input></Input>
-          <Input></Input>
-          <Input></Input>
-          <Input></Input>
-          <Input></Input>
-        </div>
-        <div className="signin-section">
-          <button>회원가입</button>
-        </div>
-      </div>
-    </SignUpWrapper>
-  );
-}
