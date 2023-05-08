@@ -3,13 +3,16 @@ import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import useSignUpMutation from '@/hooks/queries/useSignUpMutation';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export interface ISignUpForm {
   email: string;
   password: string;
   username: string;
   nickname: string;
-  birthdate: string;
+  birthDate: string;
 }
 
 const schema = yup.object({
@@ -20,7 +23,7 @@ const schema = yup.object({
   password: yup.string().required('비밀번호를 입력해주세요.'),
   username: yup.string().required('실명을 입력해주세요.'),
   nickname: yup.string().required('영어 이름을 입력해주세요.'),
-  birthdate: yup.string().required('생일을 선택해주세요.'),
+  birthDate: yup.string().required('생일을 선택해주세요.'),
 });
 
 export default function SignUp() {
@@ -28,10 +31,19 @@ export default function SignUp() {
     resolver: yupResolver(schema),
     mode: 'onSubmit',
   });
+  const { isLoading, mutate: signupMuate, isSuccess } = useSignUpMutation();
+  const router = useRouter();
 
   const onSignUp = (data: ISignUpForm) => {
-    console.log('submit', data);
+    signupMuate(data);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      alert('회원가입 성공!');
+      router.push('/user/signin');
+    }
+  }, [isSuccess]);
 
   return (
     <SignUpWrapper>
@@ -73,12 +85,14 @@ export default function SignUp() {
               className="signup-input"
               type="date"
               placeholder="생일"
-              useFormRegisterReturn={register('birthdate')}
-              error={formState.errors.birthdate?.message ?? ''}
+              useFormRegisterReturn={register('birthDate')}
+              error={formState.errors.birthDate?.message ?? ''}
             ></Input>
           </div>
           <div className="signup-section">
-            <button type="submit">회원가입</button>
+            <button type="submit" disabled={isLoading}>
+              회원가입
+            </button>
           </div>
         </form>
       </div>
@@ -120,5 +134,9 @@ const SignUpWrapper = styled.div`
     border-radius: 10px;
     background-color: #959595;
     color: white;
+
+    &:disabled {
+      cursor: wait;
+    }
   }
 `;
