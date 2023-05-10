@@ -2,14 +2,10 @@ import { axiosClient, ServerResponse } from '@/apis';
 import { ISignInForm } from '@/pages/user/signin';
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { accessTokeneAtom } from '@/store/atoms';
-import { useRecoilState } from 'recoil';
 
 type SignIn = {};
 
 const useSignInMutation = () => {
-  const [accessToken, setAccessToken] = useRecoilState(accessTokeneAtom);
-
   const signup = async (param: ISignInForm) => {
     const response = await axiosClient.post<ServerResponse<SignIn>>('/v1/auth/login', {
       ...param,
@@ -25,7 +21,7 @@ const useSignInMutation = () => {
     onSuccess: res => {
       let bearerToken = `${res.headers['access-authorization']}`;
       let accessToken = bearerToken.split(' ')[1];
-      setAccessToken(accessToken);
+      localStorage.setItem('access_token', accessToken);
     },
   });
 };

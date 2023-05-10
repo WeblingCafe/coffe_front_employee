@@ -1,7 +1,8 @@
-import { accessTokeneAtom } from '@/store/atoms';
-import { useRecoilState } from 'recoil';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Home() {
-  const [accessToken, setAccessToken] = useRecoilState(accessTokeneAtom);
-  return <p>hello Home : {accessToken}</p>;
+  const { isLogin } = useAuth();
+  console.log('isLogin', isLogin);
+
+  return <p>hello Home </p>;
 }

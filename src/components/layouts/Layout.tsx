@@ -1,3 +1,4 @@
+import { useAuth } from '@/hooks/useAuth';
 import styled from 'styled-components';
 import Navigation from './Navigation';
 
@@ -6,16 +7,18 @@ interface ILayoutProps {
 }
 
 interface IContentSectoinProps {
-  isShowNavigation: boolean;
+  showNavigation: boolean;
 }
 
 export default function Layout(props: ILayoutProps) {
+  const { isLogin } = useAuth();
+
   return (
     <>
-      <LayoutWrapper isShowNavigation={true}>
+      <LayoutWrapper showNavigation={isLogin}>
         <div className="content-layout">
           <section className="content-section">{props.children}</section>
-          <Navigation />
+          <Navigation isHidden={!isLogin} />
         </div>
       </LayoutWrapper>
     </>
@@ -38,6 +41,6 @@ const LayoutWrapper = styled.div`
   }
 
   .content-section {
-    ${(props: IContentSectoinProps) => (props.isShowNavigation ? 'height : calc(100% - 80px)' : '100%')};
+    ${(props: IContentSectoinProps) => (props.showNavigation ? 'height : calc(100% - 80px)' : 'height : 100%')};
   }
 `;

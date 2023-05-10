@@ -7,6 +7,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import useSignInMutation from '@/hooks/queries/useSignInMutation';
 import { useEffect } from 'react';
 
+import { useAuth } from '@/hooks/useAuth';
+
 export interface ISignInForm {
   email: string;
   password: string;
@@ -23,10 +25,17 @@ export default function SignIn() {
     mode: 'onSubmit',
   });
   const { isLoading, mutate: signinMuate, isSuccess } = useSignInMutation();
+  const { isLogin } = useAuth();
 
   const onSignIn = (data: ISignInForm) => {
     signinMuate(data);
   };
+
+  useEffect(() => {
+    if (isLogin) {
+      router.push('/home');
+    }
+  }, [isLogin]);
 
   useEffect(() => {
     if (isSuccess) {

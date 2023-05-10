@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import useSignUpMutation from '@/hooks/queries/useSignUpMutation';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useAuth } from '@/hooks/useAuth';
 
 export interface ISignUpForm {
   email: string;
@@ -33,10 +34,17 @@ export default function SignUp() {
   });
   const { isLoading, mutate: signupMuate, isSuccess } = useSignUpMutation();
   const router = useRouter();
+  const { isLogin } = useAuth();
 
   const onSignUp = (data: ISignUpForm) => {
     signupMuate(data);
   };
+
+  useEffect(() => {
+    if (isLogin) {
+      router.push('/home');
+    }
+  }, [isLogin]);
 
   useEffect(() => {
     if (isSuccess) {
