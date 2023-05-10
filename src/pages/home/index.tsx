@@ -1,3 +1,7 @@
+import { accessTokeneAtom } from '@/store/atoms';
+import { useRecoilState } from 'recoil';
+
 export default function Home() {
-  return <p>hello Home</p>;
+  const [accessToken, setAccessToken] = useRecoilState(accessTokeneAtom);
+  return <p>hello Home : {accessToken}</p>;
 }

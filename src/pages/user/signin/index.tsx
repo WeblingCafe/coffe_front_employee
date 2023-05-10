@@ -37,62 +37,52 @@ export default function SignIn() {
   const router = useRouter();
   return (
     <SignInWrapper>
-      <div className="signin-box">
+      <div className="signin-section">
+        <h1>Webling Cafe</h1>
+      </div>
+
+      <form onSubmit={handleSubmit(onSignIn)}>
         <div className="signin-section">
-          <h1>Webling Cafe</h1>
+          <Input
+            className="signin-input"
+            type="email"
+            placeholder="email"
+            useFormRegisterReturn={register('email')}
+            error={formState.errors.email?.message ?? ''}
+          ></Input>
+          <Input
+            className="signin-input"
+            type="password"
+            placeholder="password"
+            useFormRegisterReturn={register('password')}
+            error={formState.errors.password?.message ?? ''}
+          ></Input>
         </div>
 
-        <form onSubmit={handleSubmit(onSignIn)}>
-          <div className="signin-section">
-            <Input
-              className="signin-input"
-              type="email"
-              placeholder="email"
-              useFormRegisterReturn={register('email')}
-              error={formState.errors.email?.message ?? ''}
-            ></Input>
-            <Input
-              className="signin-input"
-              type="password"
-              placeholder="password"
-              useFormRegisterReturn={register('password')}
-              error={formState.errors.password?.message ?? ''}
-            ></Input>
-          </div>
-
-          <div className="signin-section">
-            <button type="submit" disabled={isLoading}>
-              로그인
-            </button>
-            <button
-              type="button"
-              disabled={isLoading}
-              onClick={() => {
-                router.push('/user/signup');
-              }}
-            >
-              회원가입
-            </button>
-          </div>
-        </form>
-      </div>
+        <div className="signin-section">
+          <button type="submit" disabled={isLoading}>
+            로그인
+          </button>
+          <button
+            type="button"
+            disabled={isLoading}
+            onClick={() => {
+              router.push('/user/signup');
+            }}
+          >
+            회원가입
+          </button>
+        </div>
+      </form>
     </SignInWrapper>
   );
 }
 
 const SignInWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  .signin-box {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 400px;
-    height: 100vh;
-  }
 
   .signin-section {
     display: flex;

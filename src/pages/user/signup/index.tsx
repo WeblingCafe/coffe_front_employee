@@ -47,72 +47,62 @@ export default function SignUp() {
 
   return (
     <SignUpWrapper>
-      <div className="signup-box">
-        <div className="signup-section">
-          <h1>Webling Cafe</h1>
-        </div>
-        <form onSubmit={handleSubmit(onSignUp)}>
-          <div className="signup-section">
-            <Input
-              className="signup-input"
-              type="email"
-              placeholder="email"
-              useFormRegisterReturn={register('email')}
-              error={formState.errors.email?.message ?? ''}
-            ></Input>
-            <Input
-              className="signup-input"
-              type="password"
-              placeholder="password"
-              useFormRegisterReturn={register('password')}
-              error={formState.errors.password?.message ?? ''}
-            ></Input>
-            <Input
-              className="signup-input"
-              type="text"
-              placeholder="실명"
-              useFormRegisterReturn={register('username')}
-              error={formState.errors.username?.message ?? ''}
-            ></Input>
-            <Input
-              className="signup-input"
-              type="text"
-              placeholder="영어 이름"
-              useFormRegisterReturn={register('nickname')}
-              error={formState.errors.nickname?.message ?? ''}
-            ></Input>
-            <Input
-              className="signup-input"
-              type="date"
-              placeholder="생일"
-              useFormRegisterReturn={register('birthDate')}
-              error={formState.errors.birthDate?.message ?? ''}
-            ></Input>
-          </div>
-          <div className="signup-section">
-            <button type="submit" disabled={isLoading}>
-              회원가입
-            </button>
-          </div>
-        </form>
+      <div className="signup-section">
+        <h1>Webling Cafe</h1>
       </div>
+      <form onSubmit={handleSubmit(onSignUp)}>
+        <div className="signup-section">
+          <Input
+            className="signup-input"
+            type="email"
+            placeholder="email"
+            useFormRegisterReturn={register('email')}
+            error={formState.errors.email?.message ?? ''}
+          ></Input>
+          <Input
+            className="signup-input"
+            type="password"
+            placeholder="password"
+            useFormRegisterReturn={register('password')}
+            error={formState.errors.password?.message ?? ''}
+          ></Input>
+          <Input
+            className="signup-input"
+            type="text"
+            placeholder="실명"
+            useFormRegisterReturn={register('username')}
+            error={formState.errors.username?.message ?? ''}
+          ></Input>
+          <Input
+            className="signup-input"
+            type="text"
+            placeholder="영어 이름"
+            useFormRegisterReturn={register('nickname')}
+            error={formState.errors.nickname?.message ?? ''}
+          ></Input>
+          <Input
+            className="signup-input"
+            type="date"
+            placeholder="생일"
+            useFormRegisterReturn={register('birthDate')}
+            error={formState.errors.birthDate?.message ?? ''}
+          ></Input>
+        </div>
+        <div className="signup-section">
+          <button type="submit" disabled={isLoading}>
+            회원가입
+          </button>
+        </div>
+      </form>
     </SignUpWrapper>
   );
 }
 
 const SignUpWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  .signup-box {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 400px;
-    height: 100vh;
-  }
 
   .signup-section {
     display: flex;
