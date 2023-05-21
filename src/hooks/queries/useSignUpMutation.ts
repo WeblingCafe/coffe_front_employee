@@ -1,4 +1,4 @@
-import { axiosClient, ServerResponse } from '@/apis';
+import { axiosClient, CafeResponse } from '@/apis';
 import { ISignUpForm } from '@/pages/user/signup';
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
@@ -7,10 +7,8 @@ type SignUp = {};
 
 const useSignUpMutation = () => {
   const signup = async (param: ISignUpForm) => {
-    const { data } = await axiosClient.post<ServerResponse<SignUp>>('v1/auth', {
+    const { data } = await axiosClient.post<CafeResponse<SignUp>>('v1/auth/register', {
       ...param,
-      phoneNumber: '0000',
-      team: 'FRONTEND',
     });
 
     return data;
