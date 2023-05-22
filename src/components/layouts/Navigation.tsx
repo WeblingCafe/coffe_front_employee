@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
+import { NavigationItemList } from '@/utils/constants';
 
 interface INavigationProps {
   isHidden: boolean;
@@ -9,21 +10,13 @@ interface INavigationProps {
 export default function Navigation(props: INavigationProps) {
   return (
     <NavigationContainer isHidden={props.isHidden}>
-      <Link className="link-item" href="/home">
-        <p>home</p>
-      </Link>
-      <Link className="link-item" href="/menu">
-        <p>menu</p>
-      </Link>
-      <Link className="link-item" href="/history">
-        <p>history</p>
-      </Link>
-      <Link className="link-item" href="/cart">
-        <p>cart</p>
-      </Link>
-      <Link className="link-item" href="/mypage">
-        <p>mypage</p>
-      </Link>
+      {NavigationItemList.map(item => {
+        return (
+          <Link key={item.id} className="link-item" href={`${item.path}`}>
+            <p>{item.name}</p>
+          </Link>
+        );
+      })}
     </NavigationContainer>
   );
 }

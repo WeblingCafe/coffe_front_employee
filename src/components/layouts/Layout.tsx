@@ -1,5 +1,6 @@
 import { useAuth } from '@/hooks/useAuth';
 import styled from 'styled-components';
+import Header from './Header';
 import Navigation from './Navigation';
 
 interface ILayoutProps {
@@ -17,6 +18,7 @@ export default function Layout(props: ILayoutProps) {
     <>
       <LayoutWrapper showNavigation={isLogin}>
         <div className="content-layout">
+          <Header isHidden={!isLogin}></Header>
           <section className="content-section">{props.children}</section>
           <Navigation isHidden={!isLogin} />
         </div>
