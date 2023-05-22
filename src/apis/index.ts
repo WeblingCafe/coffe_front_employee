@@ -31,12 +31,13 @@ axiosClient.interceptors.response.use(
   },
   async error => {
     const { config, response } = error;
-
-    console.log('res intercept', response, config);
     if (response.status === 401) {
-      console.log('expired');
-      let res = await axios.post('https://coffee-api.snaps.com/v1/auth/retrieve-token');
-      console.log('retrieve-token', res.data);
+      const res = await axiosClient.post('https://coffee-api.snaps.com/v1/auth/retrieve-token');
+      const newToken = res.data.responseObject.split(' ')[1];
+      localStorage.setItem('access_token', newToken);
+      config.headers['Access-Authorization'] = `Bearer ${newToken}`;
+      return axios(config);
     }
+    return Promise.reject(error);
   }
 );
