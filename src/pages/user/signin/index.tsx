@@ -31,6 +31,8 @@ export default function SignIn() {
     signinMuate(data);
   };
 
+  const router = useRouter();
+
   useEffect(() => {
     if (isLogin) {
       router.push('/home');
@@ -43,7 +45,6 @@ export default function SignIn() {
     }
   }, [isSuccess]);
 
-  const router = useRouter();
   return (
     <SignInWrapper>
       <div className="signin-section">

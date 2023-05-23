@@ -1,7 +1,9 @@
-import { CafeResponse } from '@/apis';
+import { axiosClient, CafeResponse } from '@/apis';
+import Tabs, { type TabItem } from '@/components/common/Tabs';
 import { Category, Menu } from '@/types';
 import axios from 'axios';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { useEffect, useMemo, useState } from 'react';
 
 export const getServerSideProps: GetServerSideProps<{
   categoryList: Category[];
@@ -19,8 +21,18 @@ export const getServerSideProps: GetServerSideProps<{
 };
 
 export default function Menu({ categoryList, menuList }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log('menuList 2', menuList);
-  console.log('categoryList 2', categoryList);
+  const categoryTabList = useMemo(() => {
+    return categoryList.map(el => {
+      return {
+        id: `${el.categoryId}`,
+        title: el.categoryName,
+      };
+    });
+  }, [categoryList]);
 
-  return <p>hello Menu </p>;
+  return (
+    <div>
+      <Tabs items={categoryTabList}></Tabs>
+    </div>
+  );
 }
