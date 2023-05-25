@@ -1,4 +1,4 @@
-import Input from '@/components/common/Input';
+import Input from '@/components/atoms/Input';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';

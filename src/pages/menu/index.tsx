@@ -1,5 +1,5 @@
 import { axiosClient, CafeResponse } from '@/apis';
-import Tabs, { type TabItem } from '@/components/common/Tabs';
+import Tabs, { type TabItem } from '@/components/organisms/Tabs';
 import { Category, Menu } from '@/types';
 import axios from 'axios';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
@@ -36,8 +36,8 @@ export default function Menu({ categoryList, menuList }: InferGetServerSideProps
   }, [categoryList]);
 
   return (
-    <div>
+    <>
       <Tabs items={categoryTabList} />
-    </div>
+    </>
   );
 }

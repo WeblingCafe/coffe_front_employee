@@ -2,6 +2,7 @@ import { selectedTabAtom } from '@/store/atoms';
 import { MouseEvent, useCallback, useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
+import TabItemBox from '../molecules/TabItem';
 
 interface ITabsProps {
   items: TabItem[];
@@ -13,7 +14,7 @@ export type TabItem = {
   title: string;
 };
 
-function Tabs(props: ITabsProps) {
+const Tabs = (props: ITabsProps) => {
   const { items, onSelect } = props;
   const [selectedTab, setSelectedTab] = useRecoilState(selectedTabAtom);
   const tabRef = useRef<HTMLDivElement>(null);
@@ -62,16 +63,17 @@ function Tabs(props: ITabsProps) {
     <TabsWrapper ref={tabRef}>
       {items.map(item => {
         return (
-          <TabItem key={item.id} isSelcted={selectedTab === item.id} onClick={handleClick(item)}>
-            <div>
-              <p>{item.title}</p>
-            </div>
-          </TabItem>
+          <TabItemBox
+            key={item.id}
+            isSelcted={selectedTab === item.id}
+            onClick={handleClick(item)}
+            title={item.title}
+          />
         );
       })}
     </TabsWrapper>
   );
-}
+};
 
 const TabsWrapper = styled.div`
   width: 100%;
@@ -82,22 +84,6 @@ const TabsWrapper = styled.div`
   border-bottom: 1px solid lightgray;
   overflow: hidden;
   user-select: none;
-`;
-
-const TabItem = styled.div`
-  height: 100%;
-  cursor: pointer;
-  margin: 0 5px;
-  font-weight: ${(props: { isSelcted: boolean }) => (props.isSelcted ? 'bold' : 'normal')};
-
-  div {
-    min-width: 30px;
-    height: 100%;
-    border-bottom: ${(props: { isSelcted: boolean }) => (props.isSelcted ? '4px solid black' : 'none')};
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 `;
 
 export default Tabs;
