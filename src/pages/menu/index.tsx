@@ -12,6 +12,11 @@ export const getServerSideProps: GetServerSideProps<{
   const categoryList = await axios.get<CafeResponse<Category[]>>('https://coffee-api.snaps.com/v1/categories');
   const menuList = await axios.get<CafeResponse<Menu[]>>('https://coffee-api.snaps.com/v1/menus');
 
+  categoryList.data.responseObject.unshift({
+    categoryId: -1,
+    categoryName: 'ALL',
+  });
+
   return {
     props: {
       categoryList: categoryList.data.responseObject,
@@ -32,7 +37,7 @@ export default function Menu({ categoryList, menuList }: InferGetServerSideProps
 
   return (
     <div>
-      <Tabs items={categoryTabList}></Tabs>
+      <Tabs items={categoryTabList} />
     </div>
   );
 }

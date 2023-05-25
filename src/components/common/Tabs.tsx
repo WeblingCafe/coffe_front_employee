@@ -1,9 +1,11 @@
-import { MouseEvent } from 'react';
+import { selectedTabAtom } from '@/store/atoms';
+import { MouseEvent, useCallback } from 'react';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 interface ITabsProps {
   items: TabItem[];
-  onChange?: (item: TabItem) => void;
+  onSelect?: (item: TabItem) => void;
 }
 
 export type TabItem = {
@@ -12,21 +14,28 @@ export type TabItem = {
 };
 
 function Tabs(props: ITabsProps) {
-  const { items, onChange } = props;
+  const { items, onSelect } = props;
+  const [selectedTab, setSelectedTab] = useRecoilState(selectedTabAtom);
 
-  const handleClick = (item: TabItem) => (e: MouseEvent<HTMLDivElement>) => {
-    console.log('handleClick tab', item);
-    if (onChange) {
-      onChange(item);
-    }
-  };
+  const handleClick = useCallback(
+    (item: TabItem) => (e: MouseEvent<HTMLDivElement>) => {
+      if (onSelect) {
+        onSelect(item);
+        return;
+      }
+      setSelectedTab(item.id);
+    },
+    [onSelect, setSelectedTab]
+  );
 
   return (
     <TabsWrapper>
       {items.map(item => {
         return (
-          <TabItem key={item.id} onClick={handleClick(item)}>
-            <p>{item.title}</p>
+          <TabItem key={item.id} isSelcted={selectedTab === item.id} onClick={handleClick(item)}>
+            <div>
+              <p>{item.title}</p>
+            </div>
           </TabItem>
         );
       })}
@@ -35,13 +44,29 @@ function Tabs(props: ITabsProps) {
 }
 
 const TabsWrapper = styled.div`
-  height: 40px;
-  background-color: yellow;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-bottom: 1px solid lightgray;
+  overflow-x: scroll;
 `;
 
 const TabItem = styled.div`
-  width: fit-content;
   height: 100%;
+  cursor: pointer;
+  margin: 0 5px;
+  font-weight: ${(props: { isSelcted: boolean }) => (props.isSelcted ? 'bold' : 'normal')};
+
+  div {
+    min-width: 30px;
+    height: 100%;
+    border-bottom: ${(props: { isSelcted: boolean }) => (props.isSelcted ? '2px solid black' : 'none')};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 export default Tabs;
