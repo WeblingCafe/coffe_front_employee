@@ -43,6 +43,6 @@ const LayoutWrapper = styled.div`
   }
 
   .content-section {
-    ${(props: IContentSectoinProps) => (props.showNavigation ? 'height : calc(100% - 80px)' : 'height : 100%')};
+    ${(props: IContentSectoinProps) => (props.showNavigation ? 'height : calc(100% - 160px)' : 'height : 100%')};
   }
 `;

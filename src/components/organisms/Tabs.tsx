@@ -1,12 +1,12 @@
-import { selectedTabAtom } from '@/store/atoms';
 import { MouseEvent, useCallback, useEffect, useRef } from 'react';
-import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import TabItemBox from '../molecules/TabItem';
 
 interface ITabsProps {
   items: TabItem[];
   onSelect?: (item: TabItem) => void;
+  selectedTab: string;
+  setSelectedTab: (val: string) => void;
 }
 
 export type TabItem = {
@@ -15,8 +15,7 @@ export type TabItem = {
 };
 
 const Tabs = (props: ITabsProps) => {
-  const { items, onSelect } = props;
-  const [selectedTab, setSelectedTab] = useRecoilState(selectedTabAtom);
+  const { items, onSelect, setSelectedTab, selectedTab } = props;
   const tabRef = useRef<HTMLDivElement>(null);
   const posRef = useRef({ left: 0, x: 0 });
 
@@ -78,6 +77,7 @@ const Tabs = (props: ITabsProps) => {
 const TabsWrapper = styled.div`
   width: 100%;
   height: 50px;
+  flex-shrink: 0;
   display: flex;
   justify-content: flex-start;
   align-items: center;

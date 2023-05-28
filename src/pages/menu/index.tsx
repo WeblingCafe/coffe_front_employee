@@ -1,9 +1,14 @@
-import { axiosClient, CafeResponse } from '@/apis';
+import { CafeResponse } from '@/apis';
+import { SelectItem } from '@/components/molecules/SelectItemBox';
+import SelectList from '@/components/organisms/SelectList';
 import Tabs, { type TabItem } from '@/components/organisms/Tabs';
+import { selectedTabAtom } from '@/store/atoms';
 import { Category, Menu } from '@/types';
 import axios from 'axios';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
+import { useRecoilState } from 'recoil';
+import styled from 'styled-components';
 
 export const getServerSideProps: GetServerSideProps<{
   categoryList: Category[];
@@ -26,7 +31,9 @@ export const getServerSideProps: GetServerSideProps<{
 };
 
 export default function Menu({ categoryList, menuList }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const categoryTabList = useMemo(() => {
+  const [selectedTab, setSelectedTab] = useRecoilState(selectedTabAtom);
+
+  const categoryTabList = useMemo((): TabItem[] => {
     return categoryList.map(el => {
       return {
         id: `${el.categoryId}`,
@@ -35,9 +42,37 @@ export default function Menu({ categoryList, menuList }: InferGetServerSideProps
     });
   }, [categoryList]);
 
+  const selectMenuList = useMemo((): SelectItem[] => {
+    const list = menuList.map((el, idx) => {
+      return {
+        id: `${el.menuId}`,
+        imageUrl: el.menuPhotoUrl,
+        title: el.menuName,
+        category: el.menuCategoryName,
+      };
+    });
+    const tab = categoryTabList.filter(el => el.id === selectedTab)[0];
+    const filteredList = list.filter(el => {
+      return el.category === tab.title || tab.id === '-1';
+    });
+    return filteredList;
+  }, [menuList, selectedTab]);
+
+  const handleClick = (menuId: string) => () => {
+    console.log('handleClick menu', menuId);
+  };
+
   return (
-    <>
-      <Tabs items={categoryTabList} />
-    </>
+    <MenuLayout>
+      <Tabs items={categoryTabList} selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+      <SelectList items={selectMenuList} onClick={handleClick} />
+    </MenuLayout>
   );
 }
+
+const MenuLayout = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
